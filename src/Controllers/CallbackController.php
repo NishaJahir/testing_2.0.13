@@ -813,7 +813,7 @@ class CallbackController extends Controller
 
     {
         $orderlanguage = $this->orderLanguage($orderObj);
-        if(in_array($this->aryCaptureParams['payment_type'], $aryPayments)) {
+        if(in_array($this->aryCaptureParams['payment_type'], $this->aryPayments)) {
         foreach($orderObj->properties as $property)
         {
             if($property->typeId == '3' && $this->paymentHelper->getPaymentKeyByMop($property->value))
