@@ -848,7 +848,7 @@ class CallbackController extends Controller
                     $this->saveTransactionLog($transactionData);
                 }
                     
-                $callbackComments = '<br>' . $this->paymentHelper->getTranslatedText('nn_tid', $requestData['lang']).$this->aryCaptureParams['tid'];
+                $callbackComments =  $this->paymentHelper->getTranslatedText('nn_tid', $requestData['lang']).$this->aryCaptureParams['tid'];
                 if(!empty($this->aryCaptureParams['test_mode'])) {
                         $callbackComments .= '<br>' . $this->paymentHelper->getTranslatedText('test_order', $requestData['lang']);
                     }
