@@ -855,11 +855,11 @@ class CallbackController extends Controller
                 if(!empty($this->aryCaptureParams['test_mode'])) {
                         $callbackComments .= '<br>' . $this->paymentHelper->getTranslatedText('test_order', $requestData['lang']);
                     }
-               if($requestData['payment_id'] == '27') {
+               if( in_array ($requestData['payment_id'], [27, 41]) && in_array ($requestData['tid_status'], [91, 100]) ){
 			   $invoice_bank_details = '<br>' . $this->paymentService->getInvoicePrepaymentComments($requestData);
 			   $callback_message = $callbackComments . '<br>' . $invoice_bank_details;
 			   $this->sendCallbackMail($callback_message);
-		    } elseif ($requestData['payment_id'] == '59') {
+		    } elseif ($requestData['payment_id'] == '59' && $requestData['tid_status'] == '100') {
 			   $cashpayment_store_details = '<br>' . $this->paymentHelper->getCashPaymentComments($requestData);
 			   $callback_message = $callbackComments . '<br>' . $cashpayment_store_details;
 			   $this->sendCallbackMail($callback_message);
