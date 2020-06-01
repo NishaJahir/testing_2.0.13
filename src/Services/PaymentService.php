@@ -261,7 +261,7 @@ class PaymentService
         $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('amount') . $requestData['amount'] . ' ' . $requestData['currency'];
 
         $comments .= PHP_EOL . PHP_EOL .$this->paymentHelper->getTranslatedText('any_one_reference_text');
-        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference1').' ' .('BNR-' . $requestData['product'] . '-' . $requestData['order_no']). PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference2') .' ' . 'TID '. $requestData['tid']. PHP_EOL;
+        $comments .= PHP_EOL . $this->paymentHelper->getTranslatedText('payment_reference1').' ' .('BNR-' . $requestData['product_id'] . '-' . $requestData['order_no']). PHP_EOL. $this->paymentHelper->getTranslatedText('payment_reference2') .' ' . 'TID '. $requestData['tid']. PHP_EOL;
         $comments .= PHP_EOL;
         return $comments;
     }
@@ -877,7 +877,7 @@ class PaymentService
 	 $lang = strtolower((string)$nnPaymentData['lang']);
 	 $additional_info = [
 		'currency' => $nnPaymentData['currency'],
-		'product' => !empty($nnPaymentData['product_id']) ? $nnPaymentData['product_id'] : $nnPaymentData['product'] ,
+		'product_id' => !empty($nnPaymentData['product_id']) ? $nnPaymentData['product_id'] : $nnPaymentData['product'] ,
 		'payment_id' => $nnPaymentData['payment_id'],
 		'plugin_version' => $nnPaymentData['system_version'],
 		'test_mode' => !empty($nnPaymentData['test_mode']) ? $this->paymentHelper->getTranslatedText('test_order',$lang) : '0',
