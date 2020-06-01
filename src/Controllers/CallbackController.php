@@ -319,6 +319,7 @@ class CallbackController extends Controller
                             $paymentData['tid']         = $this->aryCaptureParams['tid'];
                             $paymentData['order_no']    = $nnTransactionHistory->orderNo;
                             $paymentData['mop']         = $nnTransactionHistory->mopId;
+			    $paymentData['tid_status']  = $this->aryCaptureParams['tid_status'];
                             $this->paymentHelper->createPlentyPayment($paymentData);
                             $this->sendCallbackMail($callbackComments);
                             return $this->renderTemplate($callbackComments);
@@ -328,6 +329,7 @@ class CallbackController extends Controller
                             $paymentData['tid']         = $this->aryCaptureParams['tid'];
                             $paymentData['order_no']    = $nnTransactionHistory->orderNo;
                             $paymentData['mop']         = $nnTransactionHistory->mopId;
+			    $paymentData['tid_status']  = $this->aryCaptureParams['tid_status'];
                             $this->paymentHelper->createPlentyPayment($paymentData);
                             
                             $callbackComments  = sprintf($this->paymentHelper->getTranslatedText('callback_initial_execution',$orderLanguage), $this->aryCaptureParams['shop_tid'], ($this->aryCaptureParams['amount'] / 100), $this->aryCaptureParams['currency'], date('Y-m-d H:i:s'), $this->aryCaptureParams['tid'] ).'</br>';
@@ -360,6 +362,7 @@ class CallbackController extends Controller
                 $paymentData['type']        = 'debit';
                 $paymentData['order_no']    = $nnTransactionHistory->orderNo;
                 $paymentData['mop']         = $nnTransactionHistory->mopId;
+		$paymentData['tid_status']  = $this->aryCaptureParams['tid_status'];
 		    
 		    $total_order_details = $this->transaction->getTransactionData('orderNo', $nnTransactionHistory->orderNo);
 		
@@ -395,6 +398,7 @@ class CallbackController extends Controller
                         $paymentData['tid']         = $this->aryCaptureParams['tid'];
                         $paymentData['order_no']    = $nnTransactionHistory->orderNo;
                         $paymentData['mop']         = $nnTransactionHistory->mopId;
+			$paymentData['tid_status']  = $this->aryCaptureParams['tid_status'];
                         if($this->aryCaptureParams['payment_type'] == 'PRZELEWY24') {
                             $orderStatus = (float) $this->config->get('Novalnet.novalnet_przelewy_order_completion_status');
                         } else {
@@ -475,6 +479,7 @@ class CallbackController extends Controller
                                         $paymentData['tid']         = $this->aryCaptureParams['tid'];
                                         $paymentData['order_no']    = $nnTransactionHistory->orderNo;
                                         $paymentData['mop']         = $nnTransactionHistory->mopId;
+				        $paymentData['tid_status']  = $this->aryCaptureParams['tid_status'];
                                         if ($db_details['payment_id'] == '27' || $db_details['payment_id'] == '41' && $this->aryCaptureParams['tid_status'] == '91' || $db_details['payment_id'] == '40' && $this->aryCaptureParams['tid_status'] == '99' ) {
                                         $paymentData['paid_amount'] = '0';
                                         }
