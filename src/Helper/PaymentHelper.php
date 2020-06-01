@@ -646,8 +646,8 @@ class PaymentHelper
             $comments .= $requestData['nearest_store_title_' . $i] . PHP_EOL;
             $comments .= $this->checkUtf8Character($requestData['nearest_store_street_' . $i]) . PHP_EOL;
             $comments .= $requestData['nearest_store_city_' . $i] . PHP_EOL;
-            $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL . PHP_EOL;
-            $comments .= $countryName . PHP_EOL;
+            $comments .= $requestData['nearest_store_zipcode_' . $i] . PHP_EOL;
+            $comments .= $countryName . PHP_EOL . PHP_EOL;
         }
 
         return $comments;
