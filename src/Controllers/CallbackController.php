@@ -428,6 +428,7 @@ class CallbackController extends Controller
 			if ($this->aryCaptureParams['tid_status'] == '100' && $transactionStatus == '98') {
 				 $saveAdditionData = true;
 				$orderStatus = $this->config->get('Novalnet.novalnet_cc_order_completion_status'); 
+				$callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_order_confirmation_text',$orderLanguage), date('d.m.Y'), date('H:i:s'));
 			}
                           
                     // Checks for Guarantee Onhold
