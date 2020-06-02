@@ -336,6 +336,14 @@ class NovalnetServiceProvider extends ServiceProvider
                                             $serverRequestData['data']['payment_type'] = 'GUARANTEED_INVOICE';
                                             $serverRequestData['data']['key'] = '41';
                                             $serverRequestData['data']['birth_date'] = !empty($birthday) ? $birthday : '';
+						
+					   if (empty($address->companyName) && time() < strtotime('+18 years', strtotime($birthday))) {
+					      $content = $paymentHelper->getTranslatedText('dobinvalid');
+                                              $contentType = 'errorCode';   
+					    } elseif (!empty ($address->companyName) ) {
+            					unset($serverRequestData['data']['birth_date']);
+       					    }
+
                                         }
                                     $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
                                     
@@ -422,7 +430,7 @@ class NovalnetServiceProvider extends ServiceProvider
                 $comments .= PHP_EOL . $paymentService->getInvoicePrepaymentComments($bank_details);
                 
                 }
-                 if($db_details['payment_id'] == '59' && ($transaction_details->amount > $totalCallbackAmount)) {
+                 if($db_details['payment_id'] == '59' && ($transaction_details->amount > $totalCallbackAmount) && $tid_status == '100' ) {
                 $comments .= PHP_EOL . $cashpayment_comments;   
                 }
                 $orderPdfGenerationModel = pluginApp(OrderPdfGeneration::class);
