@@ -145,6 +145,14 @@ class PaymentController extends Controller
     {
         $requestData = $this->request->all();
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($requestData);
+        $basket = $this->basketRepository->load();  
+        $billingAddressId = $basket->customerInvoiceAddressId;
+        $address = $this->addressRepository->findAddressById($billingAddressId);
+        foreach ($address->options as $option) {
+            if ($option->typeId == 9) {
+            $dob = $option->value;
+            }
+       }
         
         $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
         if (empty($serverRequestData['data']['first_name']) && empty($serverRequestData['data']['last_name'])) {
@@ -179,7 +187,15 @@ class PaymentController extends Controller
             if('guarantee' == $guranteeStatus)
             {    
                 $birthday = sprintf('%4d-%02d-%02d',$requestData['nn_guarantee_year'],$requestData['nn_guarantee_month'],$requestData['nn_guarantee_date']);
-                 
+                $birthday = !empty($dob)? $dob :  $birthday;
+                
+                if( time() < strtotime('+18 years', strtotime($birthday)) && empty($address->companyName))
+                {
+                    $notificationMessage = $this->paymentHelper->getTranslatedText('dobinvalid');
+                    $this->paymentService->pushNotification($notificationMessage, 'error', 100);
+                    return $this->response->redirectTo('checkout');
+                }
+
                     // Guarantee Params Formation 
                     if( $requestData['paymentKey'] == 'NOVALNET_SEPA' ) {
                     $serverRequestData['data']['payment_type'] = 'GUARANTEED_DIRECT_DEBIT_SEPA';
@@ -192,7 +208,9 @@ class PaymentController extends Controller
                     }
             }
         }
-     
+        if (!empty ($address->companyName) ) {
+            unset($serverRequestData['data']['birth_date']);
+        }
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);  
         return $this->response->redirectTo('place-order');
     }
