@@ -424,7 +424,7 @@ class CallbackController extends Controller
                 
                     $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
                     $saveAdditionData = false;
-			
+			$this->getLogger(__METHOD__)->error('calbback1', $this->aryCaptureParams['payment_type']);
 			if ($this->aryCaptureParams['tid_status'] == '100' && $transactionStatus == '98') {
 				 $saveAdditionData = true;
 				$orderStatus = $this->config->get('Novalnet.novalnet_cc_order_completion_status'); 
@@ -489,6 +489,7 @@ class CallbackController extends Controller
                                         }
                                         $this->paymentHelper->createPlentyPayment($paymentData);
                     }
+			$this->getLogger(__METHOD__)->error('calbback2', $paymentData);
                     $this->paymentHelper->updateOrderStatus($nnTransactionHistory->orderNo, (float)$orderStatus);
                     $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
                      $this->sendCallbackMail($callbackComments); 
