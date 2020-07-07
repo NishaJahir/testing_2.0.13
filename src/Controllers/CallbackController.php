@@ -495,9 +495,10 @@ class CallbackController extends Controller
                     $this->paymentHelper->updateOrderStatus($nnTransactionHistory->orderNo, (float)$orderStatus);
                     $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
                      if (!empty($callbackComments)) {
-			   $this->sendCallbackMail($callbackComments); 
+			   $this->sendCallbackMail($callbackComments);
+			     return $this->renderTemplate($callbackComments);
 		     }
-		    return $this->renderTemplate($callbackComments);
+		   
 		   } 
 		    $error = 'Novalnet Callbackscript received. Payment type ( '.$this->aryCaptureParams['payment_type'].' ) is not applicable for this process!';
                     return $this->renderTemplate($error);
