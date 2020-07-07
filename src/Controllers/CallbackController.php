@@ -423,7 +423,7 @@ class CallbackController extends Controller
                 }  elseif (in_array($this->aryCaptureParams['payment_type'], ['CREDITCARD', 'INVOICE_START', 'GUARANTEED_INVOICE', 'DIRECT_DEBIT_SEPA', 'GUARANTEED_DIRECT_DEBIT_SEPA'] )) {
                 	$this->getLogger(__METHOD__)->error('status',$transactionStatus );
 			$transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
-		   if (in_array($this->aryCaptureParams['tid_status'], ['91', '99', '100']) && in_array($transactionStatus, ['75', '91', '98', '99'])) {
+		   if ( $this->aryCaptureParams['tid_status'] != $transactionStatus ) {
                    
                     $saveAdditionData = false;
 			$this->getLogger(__METHOD__)->error('calbback1', $this->aryCaptureParams['payment_type']);
