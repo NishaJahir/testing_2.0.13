@@ -423,7 +423,7 @@ class CallbackController extends Controller
                 }  elseif (in_array($this->aryCaptureParams['payment_type'], ['CREDITCARD', 'INVOICE_START', 'GUARANTEED_INVOICE', 'DIRECT_DEBIT_SEPA', 'GUARANTEED_DIRECT_DEBIT_SEPA'] )) {
                 	$this->getLogger(__METHOD__)->error('status',$transactionStatus );
 			$transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
-		   if ( ($this->aryCaptureParams['tid_status'] != $transactionStatus ) && if (in_array($this->aryCaptureParams['tid_status'], ['91', '99', '100']) && in_array($transactionStatus, ['75', '91', '98', '99']))) {
+		   if ( ($this->aryCaptureParams['tid_status'] != $transactionStatus ) && (in_array($this->aryCaptureParams['tid_status'], ['91', '99', '100']) && in_array($transactionStatus, ['75', '91', '98', '99']))) {
                    
                     $saveAdditionData = false;
 			$this->getLogger(__METHOD__)->error('calbback1', $this->aryCaptureParams['payment_type']);
@@ -494,7 +494,9 @@ class CallbackController extends Controller
 			$this->getLogger(__METHOD__)->error('calbback2', $paymentData);
                     $this->paymentHelper->updateOrderStatus($nnTransactionHistory->orderNo, (float)$orderStatus);
                     $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
-                     $this->sendCallbackMail($callbackComments); 
+                     if (!empty($callbackComments)) {
+			   $this->sendCallbackMail($callbackComments); 
+		     }
 		    return $this->renderTemplate($callbackComments);
 		   } else {
 			$error = 'Novalnet Callbackscript received. Payment type ( '.$this->aryCaptureParams['payment_type'].' ) is not applicable for this process!';
